@@ -60,5 +60,44 @@
     const level=ratio<=4&&deflection<=.01?'Хорошая жёсткость':ratio<=6&&deflection<=.03?'Допустимо':'Высокий риск вибрации';
     return {cuttingForce,radialForce,deflection,ratio,level};
   }
-  return {identify,tapDrill,metricProfile,cone,hex,rotate,iso286,turningRoughness,truePosition,boringBarDeflection};
+  function stockWeight({shape='round',density,quantity=1,diameter=0,innerDiameter=0,length=0,width=0,height=0,acrossFlats=0}){
+    if(!(density>0&&quantity>0))throw new RangeError('Density and quantity must be positive');let volume;
+    if(shape==='round')volume=Math.PI*diameter*diameter*length/4;
+    else if(shape==='tube')volume=Math.PI*(diameter*diameter-innerDiameter*innerDiameter)*length/4;
+    else if(shape==='hex')volume=Math.sqrt(3)*acrossFlats*acrossFlats*length/2;
+    else if(shape==='rect')volume=width*height*length;
+    else if(shape==='sphere')volume=Math.PI*Math.pow(diameter,3)/6;
+    else throw new TypeError('Unknown stock shape');
+    if(!(volume>0))throw new RangeError('Check stock dimensions');
+    const mass=volume*density/1e6;
+    return {volumeMm3:volume,volumeCm3:volume/1000,mass,totalMass:mass*quantity,quantity};
+  }
+  function boltCircle(pcd,count,startAngle=0){
+    if(!(pcd>0&&Number.isInteger(count)&&count>=2&&count<=360))throw new RangeError('Check PCD and hole count');
+    const radius=pcd/2,step=360/count,points=[];
+    for(let index=0;index<count;index++){const angle=startAngle+index*step,r=angle*Math.PI/180;points.push({number:index+1,angle,x:radius*Math.cos(r),y:radius*Math.sin(r)})}
+    return {pcd,radius,count,startAngle,step,points};
+  }
+  function threeWire(metricDiameter,pitch,wireDiameter=0){
+    if(!(metricDiameter>0&&pitch>0))throw new RangeError('Diameter and pitch must be positive');
+    const bestWire=.5773502692*pitch,wire=wireDiameter>0?wireDiameter:bestWire,pitchDiameter=metricDiameter-.6495190528*pitch;
+    const measurement=pitchDiameter+3*wire-.8660254038*pitch;
+    return {metricDiameter,pitch,bestWire,wire,pitchDiameter,measurement};
+  }
+  function drillPointLength(diameter,pointAngle=118){
+    if(!(diameter>0&&pointAngle>0&&pointAngle<180))throw new RangeError('Check drill diameter and angle');
+    const halfAngle=pointAngle/2,length=(diameter/2)/Math.tan(halfAngle*Math.PI/180),totalDepth=diameter+length;
+    return {diameter,pointAngle,halfAngle,length,totalDepth};
+  }
+  function machiningTime({type='turn',rpm,feed,length=0,approach=0,diameter=0,startDiameter=0,endDiameter=0,depthPerPass=0,peckFactor=1}){
+    if(!(rpm>0&&feed>0))throw new RangeError('RPM and feed must be positive');let travel,passes=1;
+    if(type==='turn'){travel=length+approach;if(depthPerPass>0&&startDiameter>endDiameter)passes=Math.max(1,Math.ceil((startDiameter-endDiameter)/(2*depthPerPass)))}
+    else if(type==='drill'){travel=(length+approach)*Math.max(1,peckFactor)}
+    else if(type==='cutoff'){travel=(diameter/2)+approach}
+    else throw new TypeError('Unknown machining operation');
+    if(!(travel>0))throw new RangeError('Check machining dimensions');
+    const feedRate=rpm*feed,minutes=travel*passes/feedRate;
+    return {type,travel,passes,feedRate,minutes,seconds:minutes*60};
+  }
+  return {identify,tapDrill,metricProfile,cone,hex,rotate,iso286,turningRoughness,truePosition,boringBarDeflection,stockWeight,boltCircle,threeWire,drillPointLength,machiningTime};
 });
