@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#07111f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Инж. инструменты">
+  <meta name="description" content="Автономные инженерные и точные расчёты для токарной и фрезерной обработки">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Инженерные инструменты</title>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <div id="offlineBadge" class="offline-badge" hidden>Офлайн</div>
+  <main id="app" class="app-shell" aria-live="polite"></main>
+  <nav class="dock glass" aria-label="Навигация">
+    <button class="dock-btn active" data-route="home" aria-label="Инструменты">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h2A2.5 2.5 0 0 1 11 6.5v2A2.5 2.5 0 0 1 8.5 11h-2A2.5 2.5 0 0 1 4 8.5zm9 0A2.5 2.5 0 0 1 15.5 4h2A2.5 2.5 0 0 1 20 6.5v2a2.5 2.5 0 0 1-2.5 2.5h-2A2.5 2.5 0 0 1 13 8.5zm-9 9A2.5 2.5 0 0 1 6.5 13h2a2.5 2.5 0 0 1 2.5 2.5v2A2.5 2.5 0 0 1 8.5 20h-2A2.5 2.5 0 0 1 4 17.5zm9 0a2.5 2.5 0 0 1 2.5-2.5h2a2.5 2.5 0 0 1 2.5 2.5v2a2.5 2.5 0 0 1-2.5 2.5h-2a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+      <span>Инструменты</span>
+    </button>
+    <button class="dock-btn" data-route="favorites" aria-label="Избранное">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9z"/></svg>
+      <span>Избранное</span>
+    </button>
+    <button class="dock-btn" data-route="settings" aria-label="Настройки">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8 3.8-2.1-1.2.1-2.4-2.4-1.4-2 1.3L11.5 7 9 8.3 7 7 4.6 8.4l.1 2.4L2.6 12l2.1 1.2-.1 2.4L7 17l2-1.3 2.1 1.2 2.5-1.2 2 1.3 2.4-1.4-.1-2.4z"/></svg>
+      <span>Настройки</span>
+    </button>
+  </nav>
+  <div id="toast" class="toast glass" role="status"></div>
+  <script src="data.js"></script>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
